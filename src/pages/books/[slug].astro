@@ -1,0 +1,83 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import { getAllBooks, getBookBySlug } from "../../lib/datocms";
+import { Image } from 'astro:assets';
+
+export async function getStaticPaths() {
+  const books = await getAllBooks();
+  return books.map((book) => ({
+    params: { slug: book.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const book = await getBookBySlug(slug as string);
+
+if (!book) {
+  return Astro.redirect("/404");
+}
+---
+
+<PageLayout
+  title={book.title}
+  bgColor="#e8ded0"
+  textColor="black"
+  transitionName="book-detail"
+  parentLink={{ href: "/books", label: "BOOKS" }}
+>
+  <article class="bg-white border-4 border-black p-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {
+        book.cover && (
+          <div>
+            <Image
+              src={book.cover.url}
+              alt={book.cover.alt || book.title}
+              width={1200}
+              height={1600}
+              class="w-full object-cover border-4 border-black"
+            />
+          </div>
+        )
+      }
+
+      <div>
+        <h1 class="text-4xl font-black mb-4" transition:name={`book-title-${book.slug}`}>{book.title}</h1>
+
+        <p class="text-xl mb-6 font-bold">{book.brief}</p>
+
+        {
+          book.amazonUrl && (
+            <a
+              href={book.amazonUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="bg-[#f39c12] text-white font-black text-lg px-8 py-4 border-4 border-black hover:bg-[#e67e22] transition-colors mb-6"
+            >
+              BUY ON AMAZON
+            </a>
+          )
+        }
+      </div>
+    </div>
+
+    {
+      book.body && (
+        <div class="book-content mt-8 pt-8 border-t-4 border-black">
+          <div set:html={book.body.replace(/\n/g, "<br>")} />
+        </div>
+      )
+    }
+  </article>
+</PageLayout>
+
+<style>
+  .book-content {
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial,
+      sans-serif;
+    color: #000;
+    line-height: 1.7;
+    font-size: 1.1rem;
+  }
+</style>

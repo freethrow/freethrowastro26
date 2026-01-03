@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(dir node_moduleshighlight.jsstyles)",
+      "Bash(findstr:*)",
+      "Bash(npm run build:*)",
+      "Bash(node -e:*)"
+    ]
+  }
+}

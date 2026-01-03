@@ -1,0 +1,29 @@
+---
+// Contact page with cyan background
+import PageLayout from '../layouts/PageLayout.astro';
+---
+
+<PageLayout title="Contact" bgColor="#1a9aad" textColor="white" transitionName="contact-box">
+  <div class="bg-white border-4 border-black p-8">
+    <form class="space-y-6">
+      <div>
+        <label class="block text-2xl font-black mb-2">NAME</label>
+        <input type="text" class="w-full border-4 border-black p-4 text-lg" placeholder="Your Name" />
+      </div>
+
+      <div>
+        <label class="block text-2xl font-black mb-2">EMAIL</label>
+        <input type="email" class="w-full border-4 border-black p-4 text-lg" placeholder="your@email.com" />
+      </div>
+
+      <div>
+        <label class="block text-2xl font-black mb-2">MESSAGE</label>
+        <textarea class="w-full border-4 border-black p-4 text-lg h-32" placeholder="Your message..."></textarea>
+      </div>
+
+      <button type="submit" class="w-full bg-[#e74c3c] border-4 border-black p-4 text-2xl font-black text-white hover:bg-[#f39c12] transition-colors">
+        SEND
+      </button>
+    </form>
+  </div>
+</PageLayout>

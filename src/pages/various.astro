@@ -1,0 +1,43 @@
+---
+// Various page - listing all various content items
+import PageLayout from '../layouts/PageLayout.astro';
+import { getAllVarious } from '../lib/datocms';
+import { Image } from 'astro:assets';
+
+const variousItems = await getAllVarious();
+
+// Format date to show Month/Year
+function formatDate(dateString: string) {
+  const date = new Date(dateString);
+  const month = date.toLocaleString('en-US', { month: 'short' }).toUpperCase();
+  const year = date.getFullYear();
+  return `${month}/${year}`;
+}
+---
+
+<PageLayout title="Various" bgColor="#9b59b6" textColor="white" transitionName="various-box">
+  <div class="space-y-6">
+    {variousItems.map((item) => (
+      <article class="bg-white border-4 border-black p-6 relative">
+        <div class="absolute top-6 right-6 bg-black text-white px-4 py-2 font-black text-lg border-4 border-black">
+          {item.category && `#${item.category.name} `}{formatDate(item.date || item._createdAt)}
+        </div>
+        <a href={`/various/${item.slug}`} class="block group">
+          {item.cover && (
+            <Image
+              src={item.cover.url}
+              alt={item.cover.alt || item.title}
+              width={800}
+              height={400}
+              class="w-full h-48 object-cover border-4 border-black mb-4"
+            />
+          )}
+          <h2 class="text-3xl font-black mb-4 group-hover:opacity-70 transition-opacity pr-32">
+            {item.title}
+          </h2>
+          <p class="text-lg">{item.short}</p>
+        </a>
+      </article>
+    ))}
+  </div>
+</PageLayout>

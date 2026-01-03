@@ -1,0 +1,140 @@
+---
+// Common layout for individual pages
+import "../styles/global.css";
+import "../styles/code-highlight.css";
+import { ClientRouter } from "astro:transitions";
+import NavMenu from "../components/NavMenu.astro";
+
+interface Props {
+  title: string;
+  bgColor: string;
+  textColor: string;
+  transitionName: string;
+  parentLink?: { href: string; label: string };
+}
+
+const { title, bgColor, textColor, transitionName, parentLink } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title} - FREETHROW</title>
+    <ClientRouter />
+    <style>
+      ::view-transition-old(articles-box),
+      ::view-transition-new(articles-box),
+      ::view-transition-old(about-box),
+      ::view-transition-new(about-box),
+      ::view-transition-old(books-box),
+      ::view-transition-new(books-box),
+      ::view-transition-old(contact-box),
+      ::view-transition-new(contact-box) {
+        animation-duration: 0.8s;
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* Book title transitions */
+      ::view-transition-old(book-title-*),
+      ::view-transition-new(book-title-*) {
+        animation-duration: 0.6s;
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+    </style>
+  </head>
+  <body
+    class={`m-0 p-0 font-['Bebas_Neue',sans-serif] bg-[${bgColor}] min-h-screen p-8 pt-24`}
+    transition:name={transitionName}
+  >
+    <div class="absolute top-8 left-8 z-50 flex gap-4">
+      <a
+        href="/"
+        class={`text-${textColor} text-2xl font-black hover:opacity-80 transition-opacity`}
+      >
+        ← HOME
+      </a>
+      {
+        parentLink && (
+          <a
+            href={parentLink.href}
+            class={`text-${textColor} text-2xl font-black hover:opacity-80 transition-opacity`}
+          >
+            ← {parentLink.label}
+          </a>
+        )
+      }
+    </div>
+
+    <h1
+      class={`text-8xl font-black tracking-wider text-${textColor} mb-8 text-center pt-16`}
+    >
+      {title.toUpperCase()}
+    </h1>
+
+    <NavMenu />
+    <div class="max-w-4xl w-full mx-auto mb-16">
+      <slot />
+    </div>
+
+    <footer
+      class={`max-w-4xl w-full mx-auto mt-16 mb-8 bg-white border-4 border-black p-8`}
+    >
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <h3 class="text-2xl font-black mb-4">NAVIGATION</h3>
+          <nav class="space-y-2">
+            <a
+              href="/"
+              class="block text-lg font-black hover:opacity-70 transition-opacity"
+              >HOME</a
+            >
+            <a
+              href="/articles"
+              class="block text-lg font-black hover:opacity-70 transition-opacity"
+              >ARTICLES</a
+            >
+            <a
+              href="/about"
+              class="block text-lg font-black hover:opacity-70 transition-opacity"
+              >ABOUT</a
+            >
+            <a
+              href="/books"
+              class="block text-lg font-black hover:opacity-70 transition-opacity"
+              >BOOKS</a
+            >
+            <a
+              href="/various"
+              class="block text-lg font-black hover:opacity-70 transition-opacity"
+              >VARIOUS</a
+            >
+            <a
+              href="/contact"
+              class="block text-lg font-black hover:opacity-70 transition-opacity"
+              >CONTACT</a
+            >
+          </nav>
+        </div>
+        <div>
+          <h3 class="text-2xl font-black mb-4">FREETHROW</h3>
+          <p class="text-lg mb-2">
+            Web Development, AI, digital exploration (?)
+          </p>
+          <p class="text-lg mb-2">
+            Built with Astro.js + DatoCMS + vibe + manual labour
+          </p>
+          <p class="text-lg">© 2026 FREETHROW</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

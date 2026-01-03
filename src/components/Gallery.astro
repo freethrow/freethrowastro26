@@ -1,0 +1,230 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  images: Array<{
+    url: string;
+    alt?: string;
+  }>;
+  title: string;
+}
+
+const { images, title } = Astro.props;
+---
+
+<div class="gallery-section">
+  <h2 class="text-2xl font-black mb-4 uppercase">Gallery</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {images.map((image, index) => (
+      <button
+        type="button"
+        class="gallery-item cursor-pointer hover:opacity-80 transition-opacity"
+        data-index={index}
+      >
+        <Image
+          src={image.url}
+          alt={image.alt || title}
+          width={400}
+          height={300}
+          class="w-full h-48 object-cover border-4 border-black"
+        />
+      </button>
+    ))}
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox" class="lightbox">
+  <button type="button" class="lightbox-close" aria-label="Close lightbox">&times;</button>
+  <button type="button" class="lightbox-prev" aria-label="Previous image">&lt;</button>
+  <button type="button" class="lightbox-next" aria-label="Next image">&gt;</button>
+  <div class="lightbox-content">
+    <Image
+      id="lightbox-image"
+      src={images[0].url}
+      alt={images[0].alt || title}
+      width={1200}
+      height={800}
+      class="lightbox-image"
+    />
+  </div>
+  <div class="lightbox-counter"></div>
+</div>
+
+<style>
+  .lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox.active {
+    display: flex;
+  }
+
+  .lightbox-content {
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox-image {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    border: 4px solid white;
+  }
+
+  .lightbox-close,
+  .lightbox-prev,
+  .lightbox-next {
+    position: absolute;
+    background: white;
+    border: 4px solid black;
+    color: black;
+    font-size: 2rem;
+    font-weight: black;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    transition: opacity 0.2s;
+    font-family: 'Bebas Neue', sans-serif;
+  }
+
+  .lightbox-close:hover,
+  .lightbox-prev:hover,
+  .lightbox-next:hover {
+    opacity: 0.7;
+  }
+
+  .lightbox-close {
+    top: 2rem;
+    right: 2rem;
+    font-size: 3rem;
+    line-height: 1;
+  }
+
+  .lightbox-prev {
+    left: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .lightbox-next {
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .lightbox-counter {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border: 4px solid black;
+    padding: 0.5rem 1rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    font-weight: black;
+  }
+
+  @media (max-width: 768px) {
+    .lightbox-close {
+      top: 1rem;
+      right: 1rem;
+      font-size: 2rem;
+      padding: 0.25rem 0.75rem;
+    }
+
+    .lightbox-prev,
+    .lightbox-next {
+      font-size: 1.5rem;
+      padding: 0.25rem 0.75rem;
+    }
+
+    .lightbox-prev {
+      left: 1rem;
+    }
+
+    .lightbox-next {
+      right: 1rem;
+    }
+
+    .lightbox-counter {
+      bottom: 1rem;
+      font-size: 1.25rem;
+    }
+  }
+</style>
+
+<script define:vars={{ images, title }}>
+  let currentIndex = 0;
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImage = document.getElementById('lightbox-image');
+  const lightboxCounter = document.querySelector('.lightbox-counter');
+  const galleryItems = document.querySelectorAll('.gallery-item');
+
+  function updateImage() {
+    if (lightboxImage && lightboxCounter) {
+      lightboxImage.src = images[currentIndex].url;
+      lightboxImage.alt = images[currentIndex].alt || title;
+      lightboxCounter.textContent = `${currentIndex + 1} / ${images.length}`;
+    }
+  }
+
+  function openLightbox(index) {
+    currentIndex = index;
+    updateImage();
+    lightbox?.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox?.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function nextImage() {
+    currentIndex = (currentIndex + 1) % images.length;
+    updateImage();
+  }
+
+  function prevImage() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    updateImage();
+  }
+
+  // Event listeners
+  galleryItems.forEach((item, index) => {
+    item.addEventListener('click', () => openLightbox(index));
+  });
+
+  document.querySelector('.lightbox-close')?.addEventListener('click', closeLightbox);
+  document.querySelector('.lightbox-next')?.addEventListener('click', nextImage);
+  document.querySelector('.lightbox-prev')?.addEventListener('click', prevImage);
+
+  // Close on background click
+  lightbox?.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+      closeLightbox();
+    }
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox?.classList.contains('active')) return;
+
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') nextImage();
+    if (e.key === 'ArrowLeft') prevImage();
+  });
+</script>

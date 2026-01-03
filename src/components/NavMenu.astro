@@ -1,0 +1,109 @@
+---
+// Navigation Menu Component
+const currentPath = Astro.url.pathname;
+---
+
+<div class="fixed top-8 right-8 z-50">
+  <!-- Hamburger Button -->
+  <button
+    id="menu-toggle"
+    class="w-14 h-14 rounded-full border-4 border-black bg-white flex flex-col items-center justify-center gap-1.5 hover:scale-110 transition-all"
+    aria-label="Toggle menu"
+  >
+    <span class="w-6 h-1 bg-black transition-all" id="bar1"></span>
+    <span class="w-6 h-1 bg-black transition-all" id="bar2"></span>
+    <span class="w-6 h-1 bg-black transition-all" id="bar3"></span>
+  </button>
+
+  <!-- Navigation Menu -->
+  <nav id="nav-menu" class="absolute top-16 right-0 flex-col gap-3 hidden">
+    <a
+      href="/articles"
+      class={`w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black text-white transition-all hover:scale-110 ${currentPath === "/articles" ? "bg-[#e74c3c] scale-110" : "bg-[#e74c3c] opacity-70"}`}
+      title="Articles"
+    >
+      ARTC
+    </a>
+    <a
+      href="/about"
+      class={`w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black text-white transition-all hover:scale-110 ${currentPath === "/about" ? "bg-[#f39c12] scale-110" : "bg-[#f39c12] opacity-70"}`}
+      title="About"
+    >
+      ABT
+    </a>
+    <a
+      href="/books"
+      class={`w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black text-black transition-all hover:scale-110 ${currentPath === "/books" ? "bg-[#e8ded0] scale-110" : "bg-[#e8ded0] opacity-70"}`}
+      title="Books"
+    >
+      BKS
+    </a>
+    <a
+      href="/contact"
+      class={`w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black text-white transition-all hover:scale-110 ${currentPath === "/contact" ? "bg-[#1a9aad] scale-110" : "bg-[#1a9aad] opacity-70"}`}
+      title="Contact"
+    >
+      CNCT
+    </a>
+    <a
+      href="/various"
+      class={`w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black text-white transition-all hover:scale-110 ${currentPath === "/various" ? "bg-[#9b59b6] scale-110" : "bg-[#9b59b6] opacity-70"}`}
+      title="Various"
+    >
+      VRS
+    </a>
+    <a
+      href="/"
+      class="w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black transition-all hover:scale-110 bg-[#f39c12] text-black"
+      title="Home"
+    >
+      HOME
+    </a>
+  </nav>
+</div>
+
+<script>
+  function setupMenu() {
+    const menuToggle = document.getElementById("menu-toggle");
+    const navMenu = document.getElementById("nav-menu");
+    const bar1 = document.getElementById("bar1");
+    const bar2 = document.getElementById("bar2");
+    const bar3 = document.getElementById("bar3");
+
+    let isOpen = false;
+
+    // Close menu when navigating to a new page
+    const closeMenu = () => {
+      isOpen = false;
+      navMenu?.classList.add("hidden");
+      navMenu?.classList.remove("flex");
+      bar1?.classList.remove("rotate-45", "translate-y-2.5");
+      bar2?.classList.remove("opacity-0");
+      bar3?.classList.remove("-rotate-45", "-translate-y-2.5");
+    };
+
+    menuToggle?.addEventListener("click", () => {
+      isOpen = !isOpen;
+
+      if (isOpen) {
+        navMenu?.classList.remove("hidden");
+        navMenu?.classList.add("flex");
+        // Animate to X
+        bar1?.classList.add("rotate-45", "translate-y-2.5");
+        bar2?.classList.add("opacity-0");
+        bar3?.classList.add("-rotate-45", "-translate-y-2.5");
+      } else {
+        closeMenu();
+      }
+    });
+
+    // Close menu on navigation
+    document.addEventListener("astro:before-preparation", closeMenu);
+  }
+
+  // Run on initial load
+  setupMenu();
+
+  // Re-run after view transitions
+  document.addEventListener("astro:page-load", setupMenu);
+</script>

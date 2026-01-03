@@ -1,0 +1,210 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { getAllVarious, getVariousBySlug } from '../../lib/datocms';
+import { renderStructuredText } from '../../lib/structuredText';
+import { Image } from 'astro:assets';
+import Gallery from '../../components/Gallery.astro';
+
+export async function getStaticPaths() {
+  const variousItems = await getAllVarious();
+
+  return variousItems.map((item) => ({
+    params: { slug: item.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const various = await getVariousBySlug(slug as string);
+
+if (!various) {
+  return Astro.redirect('/404');
+}
+
+const renderedContent = various.content ? renderStructuredText(various.content) : '';
+
+// Format date to show Month/Year
+function formatDate(dateString: string) {
+  const date = new Date(dateString);
+  const month = date.toLocaleString('en-US', { month: 'short' }).toUpperCase();
+  const year = date.getFullYear();
+  return `${month}/${year}`;
+}
+---
+
+<PageLayout
+  title={various.title}
+  bgColor="#9b59b6"
+  textColor="white"
+  transitionName="various-detail"
+  parentLink={{ href: "/various", label: "VARIOUS" }}
+>
+  <article class="bg-white border-4 border-black p-8">
+    {various.cover && (
+      <div class="relative mb-6">
+        <Image
+          src={various.cover.url}
+          alt={various.cover.alt || various.title}
+          width={1200}
+          height={400}
+          class="w-full h-64 object-cover border-4 border-black"
+        />
+        <div class="absolute -top-0 -right-0 bg-black text-white px-4 py-2 font-black text-lg border-4 border-black">
+          {various.category && `#${various.category.name} `}{formatDate(various.date || various._createdAt)}
+        </div>
+      </div>
+    )}
+
+    <h1 class="text-4xl font-black mb-6">{various.title}</h1>
+
+    {various.short && (
+      <p class="text-xl mb-8 font-bold">{various.short}</p>
+    )}
+
+    <div class="various-content">
+      <div set:html={renderedContent} />
+    </div>
+
+    {various.gallery && various.gallery.length > 0 && (
+      <div class="mt-8">
+        <Gallery images={various.gallery} title={various.title} />
+      </div>
+    )}
+
+    {various.links && various.links.length > 0 && (
+      <div class="mt-8">
+        <h2 class="text-2xl font-black mb-4 uppercase">Links</h2>
+        <ul class="space-y-2">
+          {various.links.map((link) => (
+            <li>
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-[#9b59b6] font-bold underline hover:opacity-70 transition-opacity"
+              >
+                {link.title || link.url}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </article>
+</PageLayout>
+
+<style>
+  /* Bauhaus-inspired typography - clean, geometric, functional */
+  .various-content {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    color: #000;
+    line-height: 1.6;
+  }
+
+  .various-content :global(h1) {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  .various-content :global(h2) {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .various-content :global(h3) {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+  }
+
+  .various-content :global(p) {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 1.25rem;
+    line-height: 1.7;
+    text-transform: none;
+  }
+
+  .various-content :global(a) {
+    color: #9b59b6;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+    transition: opacity 0.2s;
+  }
+
+  .various-content :global(a:hover) {
+    opacity: 0.7;
+  }
+
+  .various-content :global(ul),
+  .various-content :global(ol) {
+    margin-bottom: 1.25rem;
+    margin-left: 2rem;
+    line-height: 1.7;
+  }
+
+  .various-content :global(li) {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .various-content :global(strong) {
+    font-weight: 700;
+  }
+
+  .various-content :global(em) {
+    font-style: italic;
+  }
+
+  .various-content :global(blockquote) {
+    border-left: 4px solid #000;
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: #333;
+  }
+
+  /* Code block styling with Bauhaus aesthetic */
+  .various-content :global(pre[class*="language-"]) {
+    background-color: #2d2d2d;
+    border: 3px solid #000;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    border-radius: 0;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .various-content :global(pre code) {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    background: transparent;
+    padding: 0;
+    border: none;
+  }
+
+  /* Inline code styling */
+  .various-content :global(code:not([class*="language-"])) {
+    background-color: #f5f5f5;
+    padding: 0.2rem 0.4rem;
+    border: 1px solid #000;
+    font-size: 0.9rem;
+    font-family: Consolas, Monaco, 'Andale Mono', monospace;
+  }
+</style>

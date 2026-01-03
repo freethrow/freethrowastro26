@@ -1,0 +1,62 @@
+---
+// Articles page with red background - combines DatoCMS and markdown articles
+import PageLayout from '../layouts/PageLayout.astro';
+import { getAllArticles } from '../lib/datocms';
+import { getMarkdownArticles } from '../lib/markdown';
+
+// Get articles from both sources
+const datocmsArticles = await getAllArticles();
+const markdownArticles = getMarkdownArticles();
+
+// Normalize DatoCMS articles to common format
+const normalizedDatocms = datocmsArticles.map((article) => ({
+  slug: article.slug,
+  title: article.title,
+  short: article.short,
+  category: article.category?.name || '',
+  cover: article.cover?.url || '',
+  coverAlt: article.cover?.alt || article.title,
+  source: 'datocms' as const,
+}));
+
+// Normalize markdown articles to common format
+const normalizedMarkdown = markdownArticles.map((article) => ({
+  slug: article.slug,
+  title: article.title,
+  short: article.short,
+  category: article.category,
+  cover: article.cover,
+  coverAlt: article.title,
+  source: 'markdown' as const,
+}));
+
+// Combine and sort by title (you could sort by date if available)
+const allArticles = [...normalizedDatocms, ...normalizedMarkdown];
+---
+
+<PageLayout title="Articles" bgColor="#e74c3c" textColor="white" transitionName="articles-box">
+  <div class="space-y-6">
+    {allArticles.map((article) => (
+      <article class="bg-white border-4 border-black p-6">
+        <a href={`/articles/${article.slug}`} class="block group">
+          {article.cover && (
+            <img
+              src={article.cover}
+              alt={article.coverAlt}
+              class="w-full h-48 object-cover border-4 border-black mb-4"
+            />
+          )}
+          <h2 class="text-3xl font-black mb-4 group-hover:opacity-70 transition-opacity">
+            {article.title}
+          </h2>
+          {article.category && (
+            <p class="text-sm font-black mb-2 text-[#e74c3c]">
+              {article.category.toUpperCase()}
+            </p>
+          )}
+          <p class="text-lg">{article.short}</p>
+        </a>
+      </article>
+    ))}
+  </div>
+</PageLayout>

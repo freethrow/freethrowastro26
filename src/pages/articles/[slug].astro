@@ -1,0 +1,197 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { getAllArticles, getArticleBySlug } from '../../lib/datocms';
+import { getMarkdownArticles, getMarkdownArticleBySlug, renderMarkdown } from '../../lib/markdown';
+import { renderStructuredText } from '../../lib/structuredText';
+
+export async function getStaticPaths() {
+  // Get paths from both DatoCMS and markdown articles
+  const datocmsArticles = await getAllArticles();
+  const markdownArticles = getMarkdownArticles();
+
+  const datocmsPaths = datocmsArticles.map((article) => ({
+    params: { slug: article.slug },
+    props: { source: 'datocms' },
+  }));
+
+  const markdownPaths = markdownArticles.map((article) => ({
+    params: { slug: article.slug },
+    props: { source: 'markdown' },
+  }));
+
+  return [...datocmsPaths, ...markdownPaths];
+}
+
+const { slug } = Astro.params;
+const { source } = Astro.props;
+
+let article: any = null;
+let renderedBody = '';
+
+if (source === 'markdown') {
+  const mdArticle = getMarkdownArticleBySlug(slug as string);
+  if (mdArticle) {
+    article = {
+      title: mdArticle.title,
+      short: mdArticle.short,
+      category: mdArticle.category ? { name: mdArticle.category } : null,
+      cover: mdArticle.cover ? { url: mdArticle.cover, alt: mdArticle.title } : null,
+    };
+    renderedBody = renderMarkdown(mdArticle.content);
+  }
+} else {
+  article = await getArticleBySlug(slug as string);
+  if (article?.body) {
+    renderedBody = renderStructuredText(article.body);
+  }
+}
+
+if (!article) {
+  return Astro.redirect('/404');
+}
+---
+
+<PageLayout title={article.title} bgColor="#e74c3c" textColor="white" transitionName="article-detail" parentLink={{ href: "/articles", label: "ARTICLES" }}>
+  <article class="bg-white border-4 border-black p-8">
+    {article.cover && (
+      <img
+        src={article.cover.url}
+        alt={article.cover.alt || article.title}
+        class="w-full h-64 object-cover border-4 border-black mb-6"
+      />
+    )}
+
+    {article.category && (
+      <p class="text-sm font-black mb-4 text-[#e74c3c]">
+        {article.category.name.toUpperCase()}
+      </p>
+    )}
+
+    <h1 class="text-4xl font-black mb-6">{article.title}</h1>
+
+    {article.short && (
+      <p class="text-xl mb-8 font-bold">{article.short}</p>
+    )}
+
+    <div class="article-content">
+      <div set:html={renderedBody} />
+    </div>
+  </article>
+</PageLayout>
+
+<style>
+  /* Bauhaus-inspired typography - clean, geometric, functional */
+  .article-content {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    color: #000;
+    line-height: 1.6;
+  }
+
+  .article-content :global(h1) {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  .article-content :global(h2) {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .article-content :global(h3) {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+  }
+
+  .article-content :global(p) {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 1.25rem;
+    line-height: 1.7;
+    text-transform: none;
+  }
+
+  .article-content :global(a) {
+    color: #e74c3c;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+    transition: opacity 0.2s;
+  }
+
+  .article-content :global(a:hover) {
+    opacity: 0.7;
+  }
+
+  .article-content :global(ul),
+  .article-content :global(ol) {
+    margin-bottom: 1.25rem;
+    margin-left: 2rem;
+    line-height: 1.7;
+  }
+
+  .article-content :global(li) {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .article-content :global(strong) {
+    font-weight: 700;
+  }
+
+  .article-content :global(em) {
+    font-style: italic;
+  }
+
+  .article-content :global(blockquote) {
+    border-left: 4px solid #000;
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: #333;
+  }
+
+  /* Code block styling with Bauhaus aesthetic */
+  .article-content :global(pre[class*="language-"]) {
+    background-color: #2d2d2d;
+    border: 3px solid #000;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    border-radius: 0;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .article-content :global(pre code) {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    background: transparent;
+    padding: 0;
+    border: none;
+  }
+
+  /* Inline code styling */
+  .article-content :global(code:not([class*="language-"])) {
+    background-color: #f5f5f5;
+    padding: 0.2rem 0.4rem;
+    border: 1px solid #000;
+    font-size: 0.9rem;
+    font-family: Consolas, Monaco, 'Andale Mono', monospace;
+  }
+</style>

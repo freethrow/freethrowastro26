@@ -1,16 +1,129 @@
 ---
-
+// Bauhaus-inspired design with Tailwind CSS - Simple Grid
+import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
+    <title>FREETHROW</title>
+    <ClientRouter />
+    <style>
+      @view-transition {
+        navigation: auto;
+      }
+      ::view-transition-old(articles-box),
+      ::view-transition-new(articles-box),
+      ::view-transition-old(about-box),
+      ::view-transition-new(about-box),
+      ::view-transition-old(books-box),
+      ::view-transition-new(books-box),
+      ::view-transition-old(contact-box),
+      ::view-transition-new(contact-box),
+      ::view-transition-old(various-box),
+      ::view-transition-new(various-box) {
+        animation-duration: 0.8s;
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .freethrow-title {
+        view-transition-name: none;
+      }
+    </style>
+  </head>
+  <body
+    class="m-0 font-['Bebas_Neue',sans-serif] bg-[#e8ded0] min-h-screen flex items-center justify-center p-4"
+  >
+    <div class="flex items-center gap-8 justify-center">
+      <h1
+        class="freethrow-title text-[clamp(3rem,8vw,5rem)] font-black tracking-wider text-black [-webkit-text-stroke:6px_white] [paint-order:stroke_fill] [writing-mode:vertical-rl] rotate-180"
+      >
+        FREETHROW
+      </h1>
+
+      <!-- Square container with 3x2 grid -->
+      <div
+        class="max-w-[900px] md:max-w-[1200px] lg:max-w-[1600px] aspect-square w-[90vmin] h-[90vmin]"
+      >
+        <div class="min-w-full h-full grid grid-cols-3 grid-rows-2 gap-0">
+          <!-- Grid -->
+          <!-- 6 colored divs with navigation links -->
+          <a
+            href="/"
+            class="bg-[#1a9aad] border-4 border-black border-l-8 border-t-8 flex items-center justify-center hover:opacity-80 transition-opacity"
+          >
+            <span
+              class="text-[clamp(2rem,4vw,3rem)] font-black tracking-wider text-white"
+              >HOME</span
+            >
+          </a>
+
+          <a
+            href="/articles"
+            class="bg-[#e74c3c] border-4 border-black border-t-8 flex items-center justify-center hover:opacity-80 transition-opacity"
+            transition:name="articles-box"
+          >
+            <span
+              class="text-[clamp(2rem,4vw,3rem)] font-black tracking-wider text-white"
+              >ARTICLES</span
+            >
+          </a>
+
+          <a
+            href="/about"
+            class="bg-[#f39c12] border-4 border-black border-t-8 border-r-8 flex items-center justify-center hover:opacity-80 transition-opacity"
+            transition:name="about-box"
+          >
+            <span
+              class="text-[clamp(2rem,4vw,3rem)] font-black tracking-wider text-white"
+              >ABOUT</span
+            >
+          </a>
+
+          <a
+            href="/books"
+            class="bg-[#e8ded0] border-4 border-black border-l-8 flex items-center justify-center hover:opacity-80 transition-opacity"
+            transition:name="books-box"
+          >
+            <span
+              class="text-[clamp(2rem,4vw,3rem)] font-black tracking-wider text-black"
+              >BOOKS</span
+            >
+          </a>
+
+          <a
+            href="/contact"
+            class="bg-[#1a9aad] border-4 border-black flex items-center justify-center hover:opacity-80 transition-opacity"
+            transition:name="contact-box"
+          >
+            <span
+              class="text-[clamp(2rem,4vw,3rem)] font-black tracking-wider text-white"
+              >CONTACT</span
+            >
+          </a>
+
+          <a
+            href="/various"
+            class="bg-[#9b59b6] border-4 border-black border-r-8 border-b-8 flex items-center justify-center hover:opacity-80 transition-opacity"
+            transition:name="various-box"
+          >
+            <span
+              class="text-[clamp(2rem,4vw,3rem)] font-black tracking-wider text-white"
+              >VARIOUS</span
+            >
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
