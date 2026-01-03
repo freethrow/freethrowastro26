@@ -77,15 +77,15 @@ const { title, bgColor, textColor, transitionName, parentLink } = Astro.props;
       }
     </div>
 
-    <h1
-      class="text-8xl font-black tracking-wider mb-8 text-center pt-16"
-      style={`color: ${textColor};`}
-    >
-      {title.toUpperCase()}
-    </h1>
-
-    <NavMenu />
     <div class="max-w-4xl w-full mx-auto mb-16">
+      <h1
+        class="text-8xl font-black tracking-wider mb-8 pt-16"
+        style={`color: ${textColor};`}
+      >
+        {title.toUpperCase()}
+      </h1>
+
+      <NavMenu />
       <slot />
     </div>
 
