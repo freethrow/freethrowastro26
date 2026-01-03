@@ -3,11 +3,11 @@
 import PageLayout from '../layouts/PageLayout.astro';
 ---
 
-<PageLayout title="Contact" bgColor="#1a9aad" textColor="white" transitionName="contact-box">
+<PageLayout title="Contact" bgColor="var(--color-contact)" textColor="var(--color-text-inverse)" transitionName="contact-box">
   <div class="bg-white border-4 border-black p-8">
-    <div id="form-success" class="hidden bg-[#27ae60] border-4 border-black p-6 mb-6">
-      <p class="text-2xl font-black text-white text-center">MESSAGE SENT SUCCESSFULLY!</p>
-      <p class="text-lg text-white text-center mt-2">Thank you for reaching out. I'll get back to you soon.</p>
+    <div id="form-success" class="hidden border-4 border-black p-6 mb-6" style="background-color: var(--color-success);">
+      <p class="text-2xl font-black text-center" style="color: var(--color-text-inverse);">MESSAGE SENT SUCCESSFULLY!</p>
+      <p class="text-lg text-center mt-2" style="color: var(--color-text-inverse);">Thank you for reaching out. I'll get back to you soon.</p>
     </div>
 
     <form
@@ -60,7 +60,7 @@ import PageLayout from '../layouts/PageLayout.astro';
         ></textarea>
       </div>
 
-      <button type="submit" class="w-full bg-[#e74c3c] border-4 border-black p-4 text-2xl font-black text-white hover:bg-[#f39c12] transition-colors">
+      <button type="submit" class="w-full border-4 border-black p-4 text-2xl font-black transition-colors" style="background-color: var(--color-articles); color: var(--color-text-inverse);" onmouseover="this.style.backgroundColor='var(--color-about)'" onmouseout="this.style.backgroundColor='var(--color-articles)'">
         SEND
       </button>
     </form>

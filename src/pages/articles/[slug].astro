@@ -3,6 +3,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import { getAllArticles, getArticleBySlug } from '../../lib/datocms';
 import { getMarkdownArticles, getMarkdownArticleBySlug, renderMarkdown } from '../../lib/markdown';
 import { renderStructuredText } from '../../lib/structuredText';
+import { Image } from 'astro:assets';
 
 export async function getStaticPaths() {
   // Get paths from both DatoCMS and markdown articles
@@ -51,18 +52,20 @@ if (!article) {
 }
 ---
 
-<PageLayout title={article.title} bgColor="#e74c3c" textColor="white" transitionName="article-detail" parentLink={{ href: "/articles", label: "ARTICLES" }}>
+<PageLayout title={article.title} bgColor="var(--color-articles)" textColor="white" transitionName="article-detail" parentLink={{ href: "/articles", label: "ARTICLES" }}>
   <article class="bg-white border-4 border-black p-8">
     {article.cover && (
-      <img
+      <Image
         src={article.cover.url}
         alt={article.cover.alt || article.title}
-        class="w-full h-64 object-cover border-4 border-black mb-6"
+        width={1200}
+        height={400}
+        class="w-full h-auto aspect-[3/1] object-cover object-center border-4 border-black mb-6"
       />
     )}
 
     {article.category && (
-      <p class="text-sm font-black mb-4 text-[#e74c3c]">
+      <p class="text-sm font-black mb-4" style="color: var(--color-articles);">
         {article.category.name.toUpperCase()}
       </p>
     )}
@@ -88,7 +91,7 @@ if (!article) {
   }
 
   .article-content :global(h1) {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Staatliches', sans-serif;
     font-size: 2.5rem;
     font-weight: 400;
     letter-spacing: 0.02em;
@@ -98,7 +101,7 @@ if (!article) {
   }
 
   .article-content :global(h2) {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Staatliches', sans-serif;
     font-size: 2rem;
     font-weight: 400;
     letter-spacing: 0.02em;
@@ -108,7 +111,7 @@ if (!article) {
   }
 
   .article-content :global(h3) {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Staatliches', sans-serif;
     font-size: 1.5rem;
     font-weight: 400;
     letter-spacing: 0.02em;
@@ -126,7 +129,7 @@ if (!article) {
   }
 
   .article-content :global(a) {
-    color: #e74c3c;
+    color: var(--color-articles);
     font-weight: 600;
     text-decoration: underline;
     text-decoration-thickness: 2px;
@@ -168,8 +171,8 @@ if (!article) {
 
   /* Code block styling with Bauhaus aesthetic */
   .article-content :global(pre[class*="language-"]) {
-    background-color: #2d2d2d;
-    border: 3px solid #000;
+    background-color: var(--color-code-bg);
+    border: 3px solid var(--color-border);
     padding: 1.5rem;
     margin: 1.5rem 0;
     overflow-x: auto;
@@ -188,9 +191,9 @@ if (!article) {
 
   /* Inline code styling */
   .article-content :global(code:not([class*="language-"])) {
-    background-color: #f5f5f5;
+    background-color: var(--color-code-border);
     padding: 0.2rem 0.4rem;
-    border: 1px solid #000;
+    border: 1px solid var(--color-border);
     font-size: 0.9rem;
     font-family: Consolas, Monaco, 'Andale Mono', monospace;
   }

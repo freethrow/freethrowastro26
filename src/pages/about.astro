@@ -10,7 +10,7 @@ const aboutData = await getAbout();
 const htmlContent = aboutData?.about ? render(aboutData.about.value) : '';
 ---
 
-<PageLayout title="About" bgColor="#f39c12" textColor="white" transitionName="about-box">
+<PageLayout title="About" bgColor="var(--color-about)" textColor="white" transitionName="about-box">
   <div class="bg-white border-4 border-black p-8">
     <Image
       src={profileImage}
@@ -70,7 +70,7 @@ const htmlContent = aboutData?.about ? render(aboutData.about.value) : '';
   }
 
   .about-content :global(h1) {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Staatliches', sans-serif;
     font-size: 2.5rem;
     font-weight: 400;
     letter-spacing: 0.02em;
@@ -80,7 +80,7 @@ const htmlContent = aboutData?.about ? render(aboutData.about.value) : '';
   }
 
   .about-content :global(h2) {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Staatliches', sans-serif;
     font-size: 2rem;
     font-weight: 400;
     letter-spacing: 0.02em;
@@ -90,7 +90,7 @@ const htmlContent = aboutData?.about ? render(aboutData.about.value) : '';
   }
 
   .about-content :global(h3) {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Staatliches', sans-serif;
     font-size: 1.5rem;
     font-weight: 400;
     letter-spacing: 0.02em;
@@ -108,7 +108,7 @@ const htmlContent = aboutData?.about ? render(aboutData.about.value) : '';
   }
 
   .about-content :global(a) {
-    color: #f39c12;
+    color: var(--color-about);
     font-weight: 600;
     text-decoration: underline;
     text-decoration-thickness: 2px;

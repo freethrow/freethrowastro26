@@ -26,6 +26,8 @@ export interface Article {
     name: string;
   };
   short: string;
+  _createdAt: string;
+  date?: string;
 }
 
 export interface AllArticlesResponse {
@@ -43,6 +45,8 @@ export const ALL_ARTICLES_QUERY = `
       title
       slug
       short
+      _createdAt
+      date
       cover {
         url
         alt
@@ -62,6 +66,8 @@ export const ARTICLE_BY_SLUG_QUERY = `
       title
       slug
       short
+      _createdAt
+      date
       body {
         value
       }

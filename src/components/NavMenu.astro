@@ -19,42 +19,48 @@ const currentPath = Astro.url.pathname;
   <nav id="nav-menu" class="absolute top-16 right-0 flex-col gap-3 hidden">
     <a
       href="/articles"
-      class={`w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black text-white transition-all hover:scale-110 ${currentPath === "/articles" ? "bg-[#e74c3c] scale-110" : "bg-[#e74c3c] opacity-70"}`}
+      class={`w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black transition-all hover:scale-110 ${currentPath === "/articles" ? "scale-110" : "opacity-70"}`}
+      style="background-color: var(--color-articles); color: var(--color-text-inverse);"
       title="Articles"
     >
       ARTC
     </a>
     <a
       href="/about"
-      class={`w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black text-white transition-all hover:scale-110 ${currentPath === "/about" ? "bg-[#f39c12] scale-110" : "bg-[#f39c12] opacity-70"}`}
+      class={`w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black transition-all hover:scale-110 ${currentPath === "/about" ? "scale-110" : "opacity-70"}`}
+      style="background-color: var(--color-about); color: var(--color-text-inverse);"
       title="About"
     >
       ABT
     </a>
     <a
       href="/books"
-      class={`w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black text-black transition-all hover:scale-110 ${currentPath === "/books" ? "bg-[#e8ded0] scale-110" : "bg-[#e8ded0] opacity-70"}`}
+      class={`w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black transition-all hover:scale-110 ${currentPath === "/books" ? "scale-110" : "opacity-70"}`}
+      style="background-color: var(--color-books); color: var(--color-text-primary);"
       title="Books"
     >
       BKS
     </a>
     <a
       href="/contact"
-      class={`w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black text-white transition-all hover:scale-110 ${currentPath === "/contact" ? "bg-[#1a9aad] scale-110" : "bg-[#1a9aad] opacity-70"}`}
+      class={`w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black transition-all hover:scale-110 ${currentPath === "/contact" ? "scale-110" : "opacity-70"}`}
+      style="background-color: var(--color-contact); color: var(--color-text-inverse);"
       title="Contact"
     >
       CNCT
     </a>
     <a
       href="/various"
-      class={`w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black text-white transition-all hover:scale-110 ${currentPath === "/various" ? "bg-[#9b59b6] scale-110" : "bg-[#9b59b6] opacity-70"}`}
+      class={`w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black transition-all hover:scale-110 ${currentPath === "/various" ? "scale-110" : "opacity-70"}`}
+      style="background-color: var(--color-various); color: var(--color-text-inverse);"
       title="Various"
     >
       VRS
     </a>
     <a
       href="/"
-      class="w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black transition-all hover:scale-110 bg-[#f39c12] text-black"
+      class="w-14 h-14 rounded-full border-4 border-black flex items-center justify-center font-black transition-all hover:scale-110"
+      style="background-color: var(--color-about); color: var(--color-text-primary);"
       title="Home"
     >
       HOME

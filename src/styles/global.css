@@ -1,1 +1,111 @@
 @import "tailwindcss";
+
+/* Custom Font - Bauhaus Regular */
+@font-face {
+  font-family: 'Bauhaus';
+  src: url('/fonts/bauhausRegular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Color Palette Variables - Bauhaus 1919 Circles */
+:root {
+  /* Primary Colors - From Bauhaus 1919 poster circles */
+  --color-articles: #5A8FA8;     /* Dusty Blue - Articles */
+  --color-about: #E8A84A;        /* Golden Yellow - About */
+  --color-books: #E2D5C3;        /* Beige - Books */
+  --color-contact: #1A1A1A;      /* Black - Contact */
+  --color-various: #D85D4A;      /* Coral Red - Various */
+  --color-home: #5A8FA8;         /* Dusty Blue - Home */
+
+  /* Accent Colors */
+  --color-success: #E8A84A;      /* Golden Yellow - Success messages */
+  --color-hover-orange: #E89C4A; /* Warm Orange - Hover states */
+
+  /* Neutral Colors */
+  --color-background: #E2D5C3;   /* Beige - Main background */
+  --color-text-primary: #1A1A1A; /* Black - Primary text */
+  --color-text-inverse: #E2D5C3; /* Beige - Text on dark backgrounds */
+  --color-border: #1A1A1A;       /* Black - Borders */
+
+  /* Code block colors */
+  --color-code-bg: #1A1A1A;      /* Black - Code background */
+  --color-code-border: #E2D5C3;  /* Beige - Inline code */
+}
+
+/* Original Palette
+:root {
+  --color-articles: #e74c3c;
+  --color-about: #f39c12;
+  --color-books: #e8ded0;
+  --color-contact: #1a9aad;
+  --color-various: #9b59b6;
+  --color-home: #1a9aad;
+  --color-success: #27ae60;
+  --color-hover-orange: #e67e22;
+  --color-background: #e8ded0;
+  --color-text-primary: #000000;
+  --color-text-inverse: #ffffff;
+  --color-border: #000000;
+  --color-code-bg: #2d2d2d;
+  --color-code-border: #f5f5f5;
+}
+*/
+
+/* Alternative Palette 1 - Cool Blues & Greens
+:root {
+  --color-articles: #3498db;
+  --color-about: #1abc9c;
+  --color-books: #ecf0f1;
+  --color-contact: #16a085;
+  --color-various: #9b59b6;
+  --color-home: #2980b9;
+  --color-success: #27ae60;
+  --color-hover-orange: #16a085;
+  --color-background: #ecf0f1;
+  --color-text-primary: #2c3e50;
+  --color-text-inverse: #ffffff;
+  --color-border: #2c3e50;
+  --color-code-bg: #2c3e50;
+  --color-code-border: #bdc3c7;
+}
+*/
+
+/* Alternative Palette 2 - Warm Earth Tones
+:root {
+  --color-articles: #d35400;
+  --color-about: #f39c12;
+  --color-books: #f5e6d3;
+  --color-contact: #16a085;
+  --color-various: #8e44ad;
+  --color-home: #c0392b;
+  --color-success: #27ae60;
+  --color-hover-orange: #e67e22;
+  --color-background: #f5e6d3;
+  --color-text-primary: #000000;
+  --color-text-inverse: #ffffff;
+  --color-border: #000000;
+  --color-code-bg: #2d2d2d;
+  --color-code-border: #f5f5f5;
+}
+*/
+
+/* Alternative Palette 3 - Pastel Dreams
+:root {
+  --color-articles: #ff6b9d;
+  --color-about: #feca57;
+  --color-books: #f8f9fa;
+  --color-contact: #48dbfb;
+  --color-various: #a29bfe;
+  --color-home: #5f27cd;
+  --color-success: #00d2d3;
+  --color-hover-orange: #ee5a6f;
+  --color-background: #f8f9fa;
+  --color-text-primary: #2d3436;
+  --color-text-inverse: #ffffff;
+  --color-border: #2d3436;
+  --color-code-bg: #2d3436;
+  --color-code-border: #dfe6e9;
+}
+*/

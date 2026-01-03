@@ -25,7 +25,7 @@ const { title, bgColor, textColor, transitionName, parentLink } = Astro.props;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap"
       rel="stylesheet"
     />
     <title>{title} - FREETHROW</title>
@@ -52,13 +52,15 @@ const { title, bgColor, textColor, transitionName, parentLink } = Astro.props;
     </style>
   </head>
   <body
-    class={`m-0 p-0 font-['Bebas_Neue',sans-serif] bg-[${bgColor}] min-h-screen p-8 pt-24`}
+    class="m-0 p-0 font-['Staatliches',sans-serif] min-h-screen p-8 pt-24"
+    style={`background-color: ${bgColor};`}
     transition:name={transitionName}
   >
     <div class="absolute top-8 left-8 z-50 flex gap-4">
       <a
         href="/"
-        class={`text-${textColor} text-2xl font-black hover:opacity-80 transition-opacity`}
+        class="text-2xl font-black hover:opacity-80 transition-opacity"
+        style={`color: ${textColor};`}
       >
         ← HOME
       </a>
@@ -66,7 +68,8 @@ const { title, bgColor, textColor, transitionName, parentLink } = Astro.props;
         parentLink && (
           <a
             href={parentLink.href}
-            class={`text-${textColor} text-2xl font-black hover:opacity-80 transition-opacity`}
+            class="text-2xl font-black hover:opacity-80 transition-opacity"
+            style={`color: ${textColor};`}
           >
             ← {parentLink.label}
           </a>
@@ -75,7 +78,8 @@ const { title, bgColor, textColor, transitionName, parentLink } = Astro.props;
     </div>
 
     <h1
-      class={`text-8xl font-black tracking-wider text-${textColor} mb-8 text-center pt-16`}
+      class="text-8xl font-black tracking-wider mb-8 text-center pt-16"
+      style={`color: ${textColor};`}
     >
       {title.toUpperCase()}
     </h1>

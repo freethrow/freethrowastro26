@@ -20,7 +20,7 @@ if (!book) {
 
 <PageLayout
   title={book.title}
-  bgColor="#e8ded0"
+  bgColor="var(--color-books)"
   textColor="black"
   transitionName="book-detail"
   parentLink={{ href: "/books", label: "BOOKS" }}
@@ -52,7 +52,10 @@ if (!book) {
               href={book.amazonUrl}
               target="_blank"
               rel="noopener noreferrer"
-              class="bg-[#f39c12] text-white font-black text-lg px-8 py-4 border-4 border-black hover:bg-[#e67e22] transition-colors mb-6"
+              class="font-black text-lg px-8 py-4 border-4 border-black transition-colors mb-6"
+              style="background-color: var(--color-about); color: var(--color-text-inverse);"
+              onmouseover="this.style.backgroundColor='var(--color-hover-orange)'"
+              onmouseout="this.style.backgroundColor='var(--color-about)'"
             >
               BUY ON AMAZON
             </a>
