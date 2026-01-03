@@ -5,20 +5,59 @@ import PageLayout from '../layouts/PageLayout.astro';
 
 <PageLayout title="Contact" bgColor="#1a9aad" textColor="white" transitionName="contact-box">
   <div class="bg-white border-4 border-black p-8">
-    <form class="space-y-6">
+    <div id="form-success" class="hidden bg-[#27ae60] border-4 border-black p-6 mb-6">
+      <p class="text-2xl font-black text-white text-center">MESSAGE SENT SUCCESSFULLY!</p>
+      <p class="text-lg text-white text-center mt-2">Thank you for reaching out. I'll get back to you soon.</p>
+    </div>
+
+    <form
+      name="contact"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      class="space-y-6"
+      id="contact-form"
+    >
+      <input type="hidden" name="form-name" value="contact" />
+
+      <!-- Honeypot for spam protection -->
+      <p class="hidden">
+        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+      </p>
+
       <div>
-        <label class="block text-2xl font-black mb-2">NAME</label>
-        <input type="text" class="w-full border-4 border-black p-4 text-lg" placeholder="Your Name" />
+        <label for="name" class="block text-2xl font-black mb-2">NAME</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          class="w-full border-4 border-black p-4 text-lg"
+          placeholder="Your Name"
+        />
       </div>
 
       <div>
-        <label class="block text-2xl font-black mb-2">EMAIL</label>
-        <input type="email" class="w-full border-4 border-black p-4 text-lg" placeholder="your@email.com" />
+        <label for="email" class="block text-2xl font-black mb-2">EMAIL</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          class="w-full border-4 border-black p-4 text-lg"
+          placeholder="your@email.com"
+        />
       </div>
 
       <div>
-        <label class="block text-2xl font-black mb-2">MESSAGE</label>
-        <textarea class="w-full border-4 border-black p-4 text-lg h-32" placeholder="Your message..."></textarea>
+        <label for="message" class="block text-2xl font-black mb-2">MESSAGE</label>
+        <textarea
+          id="message"
+          name="message"
+          required
+          class="w-full border-4 border-black p-4 text-lg h-32"
+          placeholder="Your message..."
+        ></textarea>
       </div>
 
       <button type="submit" class="w-full bg-[#e74c3c] border-4 border-black p-4 text-2xl font-black text-white hover:bg-[#f39c12] transition-colors">
@@ -27,3 +66,38 @@ import PageLayout from '../layouts/PageLayout.astro';
     </form>
   </div>
 </PageLayout>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const successMessage = document.getElementById('form-success');
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(formData as any).toString(),
+        });
+
+        if (response.ok) {
+          form.reset();
+          if (successMessage) {
+            successMessage.classList.remove('hidden');
+            setTimeout(() => {
+              successMessage.classList.add('hidden');
+            }, 5000);
+          }
+        } else {
+          alert('There was a problem submitting your form. Please try again.');
+        }
+      } catch (error) {
+        alert('There was a problem submitting your form. Please try again.');
+      }
+    });
+  }
+</script>
