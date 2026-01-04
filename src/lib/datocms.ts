@@ -98,7 +98,9 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
 export interface Book {
   id: string;
   title: string;
-  body: string;
+  content: {
+    value: any;
+  };
   cover: {
     url: string;
     alt?: string;
@@ -139,7 +141,9 @@ export const BOOK_BY_SLUG_QUERY = `
       title
       slug
       brief
-      body
+      content {
+        value
+      }
       cover {
         url
         alt

@@ -1,9 +1,9 @@
 ---
 // Articles page with red background - combines DatoCMS and markdown articles
-import PageLayout from '../layouts/PageLayout.astro';
-import { getAllArticles } from '../lib/datocms';
-import { getMarkdownArticles } from '../lib/markdown';
-import { Image } from 'astro:assets';
+import PageLayout from "../layouts/PageLayout.astro";
+import { getAllArticles } from "../lib/datocms";
+import { getMarkdownArticles } from "../lib/markdown";
+import { Image } from "astro:assets";
 
 // Get articles from both sources
 const datocmsArticles = await getAllArticles();
@@ -12,7 +12,7 @@ const markdownArticles = getMarkdownArticles();
 // Format date to show Month/Year
 function formatDate(dateString: string) {
   const date = new Date(dateString);
-  const month = date.toLocaleString('en-US', { month: 'short' }).toUpperCase();
+  const month = date.toLocaleString("en-US", { month: "short" }).toUpperCase();
   const year = date.getFullYear();
   return `${month}/${year}`;
 }
@@ -22,11 +22,11 @@ const normalizedDatocms = datocmsArticles.map((article) => ({
   slug: article.slug,
   title: article.title,
   short: article.short,
-  category: article.category?.name || '',
-  cover: article.cover?.url || '',
+  category: article.category?.name || "",
+  cover: article.cover?.url || "",
   coverAlt: article.cover?.alt || article.title,
   date: article.date || article._createdAt,
-  source: 'datocms' as const,
+  source: "datocms" as const,
 }));
 
 // Normalize markdown articles to common format
@@ -37,39 +37,52 @@ const normalizedMarkdown = markdownArticles.map((article) => ({
   category: article.category,
   cover: article.cover,
   coverAlt: article.title,
-  date: article.date || '',
-  source: 'markdown' as const,
+  date: article.date || "",
+  source: "markdown" as const,
 }));
 
 // Combine and sort by date in descending order (most recent first)
-const allArticles = [...normalizedDatocms, ...normalizedMarkdown].sort((a, b) => {
-  if (!a.date) return 1;
-  if (!b.date) return -1;
-  return new Date(b.date).getTime() - new Date(a.date).getTime();
-});
+const allArticles = [...normalizedDatocms, ...normalizedMarkdown].sort(
+  (a, b) => {
+    if (!a.date) return 1;
+    if (!b.date) return -1;
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  },
+);
 ---
 
-<PageLayout title="Articles" bgColor="var(--color-articles)" textColor="white" transitionName="articles-box">
-  <div class="space-y-6">
-    {allArticles.map((article) => (
-      <article class="bg-white border-4 border-black p-6 relative">
-        <div class="absolute top-6 right-6 bg-black text-white px-4 py-2 font-black text-lg border-4 border-black">
-          {article.category && `#${article.category} `}{article.date && formatDate(article.date)}
-        </div>
-        <a href={`/articles/${article.slug}`} class="block group">
-          {article.cover && (
-            <img
-              src={article.cover}
-              alt={article.coverAlt}
-              class="w-full h-48 object-cover border-4 border-black mb-4"
-            />
-          )}
-          <h2 class="text-3xl font-black mb-4 group-hover:opacity-70 transition-opacity pr-32">
-            {article.title}
-          </h2>
-          <p class="text-lg">{article.short}</p>
-        </a>
-      </article>
-    ))}
+<PageLayout
+  title="Articles"
+  bgColor="var(--color-articles)"
+  textColor="white"
+  transitionName="articles-box"
+  whiteBgOnMobile={true}
+>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {
+      allArticles.map((article) => (
+        <article class="md:bg-white md:border-4 md:border-black md:p-6 p-3 relative">
+          <div class="absolute md:top-6 md:right-6 top-3 right-3 bg-black text-white md:px-4 md:py-2 px-3 py-1 font-black md:text-lg text-sm border-4 border-black z-10">
+            {article.category && `#${article.category} `}
+            {article.date && formatDate(article.date)}
+          </div>
+          <a href={`/articles/${article.slug}`} class="block group">
+            {article.cover && (
+              <img
+                src={article.cover}
+                alt={article.coverAlt}
+                class="w-full h-48 object-cover md:border-4 border-2 border-black mb-4"
+              />
+            )}
+            <h2
+              class={`md:text-3xl text-xl font-black mb-4 group-hover:opacity-70 transition-opacity ${article.cover ? "md:pr-32 pr-24" : "md:pt-16 pt-12 md:pr-32 pr-24"}`}
+            >
+              {article.title}
+            </h2>
+            <p class="md:text-lg text-base">{article.short}</p>
+          </a>
+        </article>
+      ))
+    }
   </div>
 </PageLayout>

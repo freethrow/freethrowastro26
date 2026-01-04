@@ -10,8 +10,8 @@ const aboutData = await getAbout();
 const htmlContent = aboutData?.about ? render(aboutData.about.value) : '';
 ---
 
-<PageLayout title="About" bgColor="var(--color-about)" textColor="white" transitionName="about-box">
-  <div class="bg-white border-4 border-black p-8">
+<PageLayout title="About" bgColor="var(--color-about)" textColor="white" transitionName="about-box" whiteBgOnMobile={true}>
+  <div class="bg-white md:border-4 border-black md:p-8 p-6">
     <Image
       src={profileImage}
       alt="Profile"

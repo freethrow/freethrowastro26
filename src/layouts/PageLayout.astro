@@ -11,9 +11,17 @@ interface Props {
   textColor: string;
   transitionName: string;
   parentLink?: { href: string; label: string };
+  whiteBgOnMobile?: boolean;
 }
 
-const { title, bgColor, textColor, transitionName, parentLink } = Astro.props;
+const {
+  title,
+  bgColor,
+  textColor,
+  transitionName,
+  parentLink,
+  whiteBgOnMobile = false,
+} = Astro.props;
 ---
 
 <html lang="en">
@@ -30,7 +38,7 @@ const { title, bgColor, textColor, transitionName, parentLink } = Astro.props;
     />
     <title>{title} - FREETHROW</title>
     <ClientRouter />
-    <style>
+    <style define:vars={{ bgColor }}>
       ::view-transition-old(articles-box),
       ::view-transition-new(articles-box),
       ::view-transition-old(about-box),
@@ -49,17 +57,35 @@ const { title, bgColor, textColor, transitionName, parentLink } = Astro.props;
         animation-duration: 0.6s;
         animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
       }
+
+      body {
+        background-color: var(--bgColor);
+      }
+
+      @media (max-width: 768px) {
+        body.white-bg-mobile {
+          background-color: white;
+        }
+
+        body.white-bg-mobile .page-title {
+          color: black !important;
+          font-size: 3rem;
+        }
+
+        body.white-bg-mobile .nav-link {
+          color: black !important;
+        }
+      }
     </style>
   </head>
   <body
-    class="m-0 p-0 font-['Staatliches',sans-serif] min-h-screen p-8 pt-24"
-    style={`background-color: ${bgColor};`}
+    class={`m-0 p-0 font-['Staatliches',sans-serif] min-h-screen p-8 pt-24 ${whiteBgOnMobile ? "white-bg-mobile" : ""}`}
     transition:name={transitionName}
   >
     <div class="absolute top-8 left-8 z-50 flex gap-4">
       <a
         href="/"
-        class="text-2xl font-black hover:opacity-80 transition-opacity"
+        class="nav-link text-2xl font-black hover:opacity-80 transition-opacity"
         style={`color: ${textColor};`}
       >
         ← HOME
@@ -68,7 +94,7 @@ const { title, bgColor, textColor, transitionName, parentLink } = Astro.props;
         parentLink && (
           <a
             href={parentLink.href}
-            class="text-2xl font-black hover:opacity-80 transition-opacity"
+            class="nav-link text-2xl font-black hover:opacity-80 transition-opacity"
             style={`color: ${textColor};`}
           >
             ← {parentLink.label}
@@ -79,7 +105,8 @@ const { title, bgColor, textColor, transitionName, parentLink } = Astro.props;
 
     <div class="max-w-4xl w-full mx-auto mb-16">
       <h1
-        class="text-8xl font-black tracking-wider mb-8 pt-16"
+        class="page-title text-xl md:text-8xl
+         md:mx-0 font-black tracking-wider mb-8 pt-16"
         style={`color: ${textColor};`}
       >
         {title.toUpperCase()}
@@ -128,15 +155,17 @@ const { title, bgColor, textColor, transitionName, parentLink } = Astro.props;
             >
           </nav>
         </div>
-        <div>
-          <h3 class="text-2xl font-black mb-4">FREETHROW</h3>
-          <p class="text-lg mb-2">
-            Web Development, AI, digital exploration (?)
-          </p>
-          <p class="text-lg mb-2">
-            Built with Astro.js + DatoCMS + vibe + manual labour
-          </p>
-          <p class="text-lg">© 2026 FREETHROW</p>
+        <div class="flex flex-col justify-between">
+          <div>
+            <h3 class="text-xl md:text-2xl font-black mb-4">FREETHROW</h3>
+            <p class="text-md md:text-lg mb-2">
+              Web Development, AI, data visualization, and other musings.
+            </p>
+            <p class="text-md md:text-lg mb-2">
+              Built with Astro.js + DatoCMS + vibe + manual labour
+            </p>
+          </div>
+          <p class="text-xl md:text-2xl font-black mb-4">© 2026 FREETHROW</p>
         </div>
       </div>
     </footer>

@@ -1,6 +1,7 @@
 ---
 import PageLayout from "../../layouts/PageLayout.astro";
 import { getAllBooks, getBookBySlug } from "../../lib/datocms";
+import { renderStructuredText } from "../../lib/structuredText";
 import { Image } from 'astro:assets';
 
 export async function getStaticPaths() {
@@ -16,6 +17,8 @@ const book = await getBookBySlug(slug as string);
 if (!book) {
   return Astro.redirect("/404");
 }
+
+const renderedContent = book.content ? renderStructuredText(book.content) : '';
 ---
 
 <PageLayout
@@ -24,9 +27,10 @@ if (!book) {
   textColor="black"
   transitionName="book-detail"
   parentLink={{ href: "/books", label: "BOOKS" }}
+  whiteBgOnMobile={true}
 >
-  <article class="bg-white border-4 border-black p-8">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <article class="md:bg-white md:border-4 md:border-black md:p-8 p-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 md:gap-8 gap-4">
       {
         book.cover && (
           <div>
@@ -35,16 +39,16 @@ if (!book) {
               alt={book.cover.alt || book.title}
               width={1200}
               height={1600}
-              class="w-full object-cover border-4 border-black"
+              class="w-full object-cover md:border-4 border-2 border-black"
             />
           </div>
         )
       }
 
       <div>
-        <h1 class="text-4xl font-black mb-4" transition:name={`book-title-${book.slug}`}>{book.title}</h1>
+        <h1 class="md:text-4xl text-2xl font-black md:mb-4 mb-3" transition:name={`book-title-${book.slug}`}>{book.title}</h1>
 
-        <p class="text-xl mb-6 font-bold">{book.brief}</p>
+        <p class="md:text-xl text-base md:mb-6 mb-4 font-bold">{book.brief}</p>
 
         {
           book.amazonUrl && (
@@ -52,7 +56,7 @@ if (!book) {
               href={book.amazonUrl}
               target="_blank"
               rel="noopener noreferrer"
-              class="font-black text-lg px-8 py-4 border-4 border-black transition-colors mb-6"
+              class="font-black md:text-lg text-base md:px-8 md:py-4 px-6 py-3 border-4 border-black transition-colors mb-6 inline-block"
               style="background-color: var(--color-about); color: var(--color-text-inverse);"
               onmouseover="this.style.backgroundColor='var(--color-hover-orange)'"
               onmouseout="this.style.backgroundColor='var(--color-about)'"
@@ -65,9 +69,9 @@ if (!book) {
     </div>
 
     {
-      book.body && (
-        <div class="book-content mt-8 pt-8 border-t-4 border-black">
-          <div set:html={book.body.replace(/\n/g, "<br>")} />
+      renderedContent && (
+        <div class="book-content md:mt-8 md:pt-8 mt-6 pt-6 md:border-t-4 border-t-2 border-black">
+          <div set:html={renderedContent} />
         </div>
       )
     }
@@ -75,12 +79,155 @@ if (!book) {
 </PageLayout>
 
 <style>
+  /* Bauhaus-inspired typography - clean, geometric, functional */
   .book-content {
-    font-family:
-      -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial,
-      sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     color: #000;
+    line-height: 1.6;
+  }
+
+  .book-content :global(h1) {
+    font-family: 'Staatliches', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 768px) {
+    .book-content :global(h1) {
+      font-size: 1.75rem;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .book-content :global(h2) {
+    font-family: 'Staatliches', sans-serif;
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 768px) {
+    .book-content :global(h2) {
+      font-size: 1.5rem;
+      margin-top: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  .book-content :global(h3) {
+    font-family: 'Staatliches', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 768px) {
+    .book-content :global(h3) {
+      font-size: 1.25rem;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .book-content :global(p) {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 1.25rem;
     line-height: 1.7;
-    font-size: 1.1rem;
+    text-transform: none;
+  }
+
+  @media (max-width: 768px) {
+    .book-content :global(p) {
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .book-content :global(a) {
+    color: var(--color-books);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+    transition: opacity 0.2s;
+  }
+
+  .book-content :global(a:hover) {
+    opacity: 0.7;
+  }
+
+  .book-content :global(ul),
+  .book-content :global(ol) {
+    margin-bottom: 1.25rem;
+    margin-left: 2rem;
+    line-height: 1.7;
+  }
+
+  .book-content :global(li) {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .book-content :global(li) {
+      font-size: 0.875rem;
+    }
+  }
+
+  .book-content :global(strong) {
+    font-weight: 700;
+  }
+
+  .book-content :global(em) {
+    font-style: italic;
+  }
+
+  .book-content :global(blockquote) {
+    border-left: 4px solid #000;
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: #333;
+  }
+
+  /* Code block styling with Bauhaus aesthetic */
+  .book-content :global(pre[class*="language-"]) {
+    background-color: var(--color-code-bg);
+    border: 3px solid var(--color-border);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    border-radius: 0;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .book-content :global(pre code) {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    background: transparent;
+    padding: 0;
+    border: none;
+  }
+
+  /* Inline code styling */
+  .book-content :global(code:not([class*="language-"])) {
+    background-color: var(--color-code-border);
+    padding: 0.2rem 0.4rem;
+    border: 1px solid var(--color-border);
+    font-size: 0.9rem;
+    font-family: Consolas, Monaco, 'Andale Mono', monospace;
   }
 </style>

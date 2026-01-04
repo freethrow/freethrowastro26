@@ -10,7 +10,7 @@ const books = await getAllBooks();
 const colors = ['#D85D4A', '#5A8FA8', '#E8A84A', '#1A1A1A', '#E2D5C3', '#E89C4A'];
 ---
 
-<PageLayout title="Books" bgColor="var(--color-books)" textColor="black" transitionName="books-box">
+<PageLayout title="Books" bgColor="var(--color-books)" textColor="black" transitionName="books-box" whiteBgOnMobile={true}>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     {books.map((book, index) => (
       <a href={`/books/${book.slug}`} class="block group">
