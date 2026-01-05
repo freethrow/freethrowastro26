@@ -4,7 +4,7 @@ short: "Learn how to build fast, content-focused websites with Astro's innovativ
 category: "Web Development"
 cover: ""
 date: "2026-01-02"
-published: true
+published: false
 ---
 
 ## What is Astro?
