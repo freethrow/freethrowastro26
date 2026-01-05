@@ -68,9 +68,15 @@ const allArticles = [...normalizedDatocms, ...normalizedMarkdown].sort(
           </div>
           <a href={`/articles/${article.slug}`} class="block group">
             {article.cover && (
-              <img
+              <Image
                 src={article.cover}
                 alt={article.coverAlt}
+                width={800}
+                height={384}
+                quality={80}
+                format="webp"
+                loading="lazy"
+                decoding="async"
                 class="w-full h-48 object-cover md:border-4 border-2 border-black mb-4"
               />
             )}

@@ -3,22 +3,18 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import { getAbout } from '../lib/datocms';
 import { render } from 'datocms-structured-text-to-html-string';
-import { Image } from 'astro:assets';
-import profileImage from '../../public/profile.jpg';
-
 const aboutData = await getAbout();
 const htmlContent = aboutData?.about ? render(aboutData.about.value) : '';
 ---
 
 <PageLayout title="About" bgColor="var(--color-about)" textColor="white" transitionName="about-box" whiteBgOnMobile={true}>
   <div class="bg-white md:border-4 border-black md:p-8 p-6">
-    <Image
-      src={profileImage}
+    <img
+      src="/profile.jpg"
       alt="Profile"
       class="profile-image"
-      width={300}
-      height={300}
-      quality={90}
+      width="300"
+      height="300"
     />
 
     {htmlContent ? (

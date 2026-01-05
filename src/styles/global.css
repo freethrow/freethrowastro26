@@ -12,26 +12,40 @@
 /* Color Palette Variables - Bauhaus 1919 Circles */
 :root {
   /* Primary Colors - From Bauhaus 1919 poster circles */
-  --color-articles: #5A8FA8;     /* Dusty Blue - Articles */
-  --color-about: #E8A84A;        /* Golden Yellow - About */
-  --color-books: #E2D5C3;        /* Beige - Books */
-  --color-contact: #1A1A1A;      /* Black - Contact */
-  --color-various: #D85D4A;      /* Coral Red - Various */
-  --color-home: #5A8FA8;         /* Dusty Blue - Home */
+  --color-articles: #5A8FA8;
+  /* Dusty Blue - Articles */
+  --color-about: #E8A84A;
+  /* Golden Yellow - About */
+  --color-books: #E2D5C3;
+  /* Beige - Books */
+  --color-contact: #464545;
+  /* Black - Contact */
+  --color-various: #D85D4A;
+  /* Coral Red - Various */
+  --color-home: #5A8FA8;
+  /* Dusty Blue - Home */
 
   /* Accent Colors */
-  --color-success: #E8A84A;      /* Golden Yellow - Success messages */
-  --color-hover-orange: #E89C4A; /* Warm Orange - Hover states */
+  --color-success: #E8A84A;
+  /* Golden Yellow - Success messages */
+  --color-hover-orange: #E89C4A;
+  /* Warm Orange - Hover states */
 
   /* Neutral Colors */
-  --color-background: #E2D5C3;   /* Beige - Main background */
-  --color-text-primary: #1A1A1A; /* Black - Primary text */
-  --color-text-inverse: #E2D5C3; /* Beige - Text on dark backgrounds */
-  --color-border: #1A1A1A;       /* Black - Borders */
+  --color-background: #E2D5C3;
+  /* Beige - Main background */
+  --color-text-primary: #1A1A1A;
+  /* Black - Primary text */
+  --color-text-inverse: #E2D5C3;
+  /* Beige - Text on dark backgrounds */
+  --color-border: #1A1A1A;
+  /* Black - Borders */
 
   /* Code block colors */
-  --color-code-bg: #1A1A1A;      /* Black - Code background */
-  --color-code-border: #E2D5C3;  /* Beige - Inline code */
+  --color-code-bg: #1A1A1A;
+  /* Black - Code background */
+  --color-code-border: #E2D5C3;
+  /* Beige - Inline code */
 }
 
 /* Original Palette
