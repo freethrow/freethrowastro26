@@ -52,8 +52,17 @@ import { ClientRouter } from "astro:transitions";
       }
 
       .grid > a {
+        opacity: 1;
+        transition: filter 0.3s ease, transform 0.2s ease;
+      }
+
+      .grid > a.animate-in {
         animation: fadeIn 0.5s ease-out forwards;
-        opacity: 0;
+      }
+
+      .grid > a:hover {
+        filter: brightness(1.1) saturate(1.2);
+        transform: translateY(-2px);
       }
 
       .grid > a:nth-child(1) {
@@ -86,7 +95,7 @@ import { ClientRouter } from "astro:transitions";
         <!-- Row 1 -->
         <a
           href="/"
-          class="aspect-square border-8 border-black flex items-center justify-center hover:opacity-80 transition-opacity"
+          class="aspect-square border-8 border-black flex items-center justify-center"
           style="background-color: var(--color-articles);"
           transition:name="articles-box"
         >
@@ -98,7 +107,7 @@ import { ClientRouter } from "astro:transitions";
 
         <a
           href="/about"
-          class="aspect-square border-8 border-black rounded-r-full flex items-center justify-center hover:opacity-80 transition-opacity"
+          class="aspect-square border-8 border-black rounded-r-full flex items-center justify-center"
           style="background-color: var(--color-about);"
           transition:name="about-box"
         >
@@ -110,7 +119,7 @@ import { ClientRouter } from "astro:transitions";
 
         <a
           href="/books"
-          class="aspect-square border-8 border-black rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
+          class="aspect-square border-8 border-black rounded-full flex items-center justify-center"
           style="background-color: var(--color-books);"
           transition:name="books-box"
         >
@@ -123,7 +132,7 @@ import { ClientRouter } from "astro:transitions";
         <!-- Row 2 -->
         <a
           href="/contact"
-          class="aspect-square border-8 border-black flex items-center justify-center hover:opacity-80 transition-opacity"
+          class="aspect-square border-8 border-black flex items-center justify-center"
           style="background-color: var(--color-contact);"
           transition:name="contact-box"
         >
@@ -135,7 +144,7 @@ import { ClientRouter } from "astro:transitions";
 
         <a
           href="/various"
-          class="aspect-square border-8 border-black rounded-r-full flex items-center justify-center hover:opacity-80 transition-opacity"
+          class="aspect-square border-8 border-black rounded-r-full flex items-center justify-center"
           style="background-color: var(--color-various);"
           transition:name="various-box"
         >
@@ -147,7 +156,7 @@ import { ClientRouter } from "astro:transitions";
 
         <a
           href="/articles"
-          class="aspect-square border-8 border-black rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
+          class="aspect-square border-8 border-black rounded-full flex items-center justify-center"
           style="background-color: var(--color-home);"
         >
           <span
@@ -165,6 +174,15 @@ import { ClientRouter } from "astro:transitions";
       <hr class="border-4 border-black w-full mt-2" />
       <p class="text-2xl font-black tracking-wider mt-2">A personal website</p>
     </div>
+    <script>
+      // Only animate on first visit per session
+      if (!sessionStorage.getItem('homeAnimated')) {
+        document.querySelectorAll('.grid > a').forEach(link => {
+          link.classList.add('animate-in');
+        });
+        sessionStorage.setItem('homeAnimated', 'true');
+      }
+    </script>
   </body><script
     data-goatcounter="https://freethrow.goatcounter.com/count"
     async

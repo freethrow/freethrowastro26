@@ -6,7 +6,8 @@
       "Bash(findstr:*)",
       "Bash(npm run build:*)",
       "Bash(node -e:*)",
-      "Bash(del nul)"
+      "Bash(del nul)",
+      "Bash(git -C:*)"
     ]
   }
 }
