@@ -15,6 +15,22 @@ function formatDate(dateString: string) {
 }
 ---
 
+<style>
+  .progressive-image {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .progressive-image img {
+    transition: filter 0.3s ease-out, transform 0.3s ease-out;
+  }
+
+  .progressive-image img.loading {
+    filter: blur(10px);
+    transform: scale(1.05);
+  }
+</style>
+
 <PageLayout title="Various" bgColor="var(--color-various)" textColor="white" transitionName="various-box" whiteBgOnMobile={true}>
   <div class="space-y-6">
     {variousItems.map((item) => (
@@ -24,13 +40,18 @@ function formatDate(dateString: string) {
         </div>
         <a href={`/various/${item.slug}`} class="block group">
           {item.cover && (
-            <Image
-              src={item.cover.url}
-              alt={item.cover.alt || item.title}
-              width={800}
-              height={400}
-              class="w-full h-48 object-cover border-4 border-black mb-4"
-            />
+            <div class="progressive-image">
+              <Image
+                src={item.cover.url}
+                alt={item.cover.alt || item.title}
+                width={800}
+                height={400}
+                loading="lazy"
+                decoding="async"
+                class="w-full h-48 object-cover border-4 border-black mb-4 progressive-img"
+                onload="this.classList.remove('loading')"
+              />
+            </div>
           )}
           <h2 class="text-3xl font-black mb-4 group-hover:opacity-70 transition-opacity pr-32">
             {item.title}
@@ -41,3 +62,22 @@ function formatDate(dateString: string) {
     ))}
   </div>
 </PageLayout>
+
+<script>
+  // Progressive image loading - add loading class to images that aren't loaded yet
+  const images = document.querySelectorAll('.progressive-img');
+
+  images.forEach((img) => {
+    if (img instanceof HTMLImageElement) {
+      // If image is not already loaded, add loading class
+      if (!img.complete) {
+        img.classList.add('loading');
+      }
+
+      // Also add event listener as backup
+      img.addEventListener('load', () => {
+        img.classList.remove('loading');
+      });
+    }
+  });
+</script>
