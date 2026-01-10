@@ -66,7 +66,7 @@ if (!article) {
   parentLink={{ href: "/articles", label: "ARTICLES" }}
   whiteBgOnMobile={true}
 >
-  <article class="bg-white md:border-4 border-black md:p-8 p-0 mx-auto">
+  <article class="bg-white md:border-4 border-black md:p-8 p-0 mx-auto" transition:name={`article-card-${slug}`}>
     {
       article.cover && (
         <Image
@@ -75,6 +75,7 @@ if (!article) {
           width={1200}
           height={400}
           class="w-full h-auto aspect-[3/1] object-cover object-center md:border-4 border-2 border-black md:mb-6 mb-4"
+          transition:name={`article-image-${slug}`}
         />
       )
     }
@@ -90,7 +91,7 @@ if (!article) {
       )
     }
 
-    <h1 class="md:text-4xl text-xl font-black md:mb-6 mb-3">{article.title}</h1>
+    <h1 class="md:text-4xl text-xl font-black md:mb-6 mb-3" transition:name={`article-title-${slug}`}>{article.title}</h1>
 
     {
       article.short && (

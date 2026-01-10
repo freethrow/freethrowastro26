@@ -34,7 +34,10 @@ function formatDate(dateString: string) {
 <PageLayout title="Various" bgColor="var(--color-various)" textColor="white" transitionName="various-box" whiteBgOnMobile={true}>
   <div class="space-y-6">
     {variousItems.map((item) => (
-      <article class="bg-white border-4 border-black p-6 relative">
+      <article
+        class="bg-white border-4 border-black p-6 relative"
+        transition:name={`various-card-${item.slug}`}
+      >
         <div class="absolute top-6 right-6 bg-black text-white px-4 py-2 font-black text-lg border-4 border-black">
           {item.category && `#${item.category.name} `}{formatDate(item.date || item._createdAt)}
         </div>
@@ -50,10 +53,14 @@ function formatDate(dateString: string) {
                 decoding="async"
                 class="w-full h-48 object-cover border-4 border-black mb-4 progressive-img"
                 onload="this.classList.remove('loading')"
+                transition:name={`various-image-${item.slug}`}
               />
             </div>
           )}
-          <h2 class="text-3xl font-black mb-4 group-hover:opacity-70 transition-opacity pr-32">
+          <h2
+            class="text-3xl font-black mb-4 group-hover:opacity-70 transition-opacity pr-32"
+            transition:name={`various-title-${item.slug}`}
+          >
             {item.title}
           </h2>
           <p class="text-lg">{item.short}</p>

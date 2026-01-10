@@ -14,7 +14,11 @@ const colors = ['#D85D4A', '#5A8FA8', '#E8A84A', '#1A1A1A', '#E2D5C3', '#E89C4A'
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     {books.map((book, index) => (
       <a href={`/books/${book.slug}`} class="block group">
-        <article class="border-4 border-black p-6 h-full transition-transform hover:scale-[1.02]" style={`background-color: ${colors[index % colors.length]}`}>
+        <article
+          class="border-4 border-black p-6 h-full transition-transform hover:scale-[1.02]"
+          style={`background-color: ${colors[index % colors.length]}`}
+          transition:name={`book-card-${book.slug}`}
+        >
           {book.cover && (
             <Image
               src={book.cover.url}
@@ -22,9 +26,13 @@ const colors = ['#D85D4A', '#5A8FA8', '#E8A84A', '#1A1A1A', '#E2D5C3', '#E89C4A'
               width={800}
               height={400}
               class="w-full h-48 object-cover border-4 border-black mb-4"
+              transition:name={`book-image-${book.slug}`}
             />
           )}
-          <h2 class="text-3xl font-black mb-4 text-white group-hover:opacity-80 transition-opacity" transition:name={`book-title-${book.slug}`}>
+          <h2
+            class="text-3xl font-black mb-4 text-white group-hover:opacity-80 transition-opacity"
+            transition:name={`book-title-${book.slug}`}
+          >
             {book.title}
           </h2>
           <p class="text-lg text-white/90">{book.brief}</p>
